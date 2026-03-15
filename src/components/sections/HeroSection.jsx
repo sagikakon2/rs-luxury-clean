@@ -33,7 +33,7 @@ export const HeroSection = () => {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black" style={{ minHeight: '100dvh' }}>
+    <section id="hero" data-dark className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black" style={{ minHeight: '100dvh' }}>
       {HERO_IMAGES.map((src, i) => {
         const isActive = i === current;
         return (

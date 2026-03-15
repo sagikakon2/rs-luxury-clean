@@ -14,9 +14,9 @@ const LiquidGlassSVG = () => (
   <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }} aria-hidden="true">
     <filter id="lg-dist" x="-10%" y="-10%" width="120%" height="120%">
       <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise" />
-      <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+      {/* <feGaussianBlur in="noise" stdDeviation="2" result="blurred" /> */}
       <feDisplacementMap in="SourceGraphic" in2="blurred" scale="50" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-      <feGaussianBlur in="displaced" stdDeviation="3" />
+      <feGaussianBlur in="displaced" stdDeviation="2.5" />
     </filter>
   </svg>
 );
@@ -37,13 +37,35 @@ const t = `all 0.6s ${ease}`;
 
 export const NavigationBar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [lightBg, setLightBg] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const hasDistortion = useIsDesktopChrome();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const getSections = () =>
+      Array.from(document.querySelectorAll('section, footer, [data-dark]'));
+
+    const detectBg = () => {
+      setScrolled(window.scrollY > 50);
+
+      const probeY = window.scrollY + 36;
+      const sections = getSections();
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sec = sections[i];
+        const top = sec.offsetTop;
+        const bottom = top + sec.offsetHeight;
+        if (probeY >= top && probeY < bottom) {
+          setLightBg(!sec.hasAttribute('data-dark'));
+          return;
+        }
+      }
+      setLightBg(true);
+    };
+
+    window.addEventListener('scroll', detectBg, { passive: true });
+    detectBg();
+    return () => window.removeEventListener('scroll', detectBg);
   }, []);
 
   const scrollTo = (href) => {
@@ -59,18 +81,18 @@ export const NavigationBar = () => {
         <div
           className="pointer-events-auto"
           style={{
-            maxWidth: scrolled ? '56rem' : '100%',
+            maxWidth: scrolled ? '64rem' : '100%',
             margin: '0 auto',
-            padding: scrolled ? '10px 16px 0' : '0',
+            padding: scrolled ? '12px 16px 0' : '0',
             transition: t,
           }}
         >
           <header
             className="lg-shell relative overflow-hidden"
             style={{
-              borderRadius: scrolled ? '1rem' : '0',
+              borderRadius: scrolled ? '1.25rem' : '0',
               boxShadow: scrolled
-                ? '0 8px 32px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.05)'
+                ? '0 6px 16px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06)'
                 : '0 0 0 0 transparent',
               transition: t,
             }}
@@ -104,16 +126,17 @@ export const NavigationBar = () => {
               style={{ opacity: scrolled ? 1 : 0, visibility: scrolled ? 'visible' : 'hidden', transition: t }}
             />
 
-            <nav className="lg-content w-full px-6 md:px-8 flex items-center justify-between h-16 md:h-[64px] relative">
+            <nav className="lg-content w-full flex items-center justify-between relative"
+              style={{ height: scrolled ? '72px' : '64px', padding: scrolled ? '0 2rem' : '0 1.5rem', transition: t }}>
               {/* Logo crossfade */}
               <button onClick={() => scrollTo('#hero')} className="shrink-0 cursor-pointer relative h-12 w-12">
                 <img src="/logos/logo-white.png" alt="R.S LUXURY CLEAN" width={48} height={48}
                   className="absolute inset-0 h-12 w-auto object-contain"
-                  style={{ opacity: scrolled ? 0 : 1, transition: `opacity 0.6s ${ease}` }}
+                  style={{ opacity: lightBg ? 0 : 1, transition: `opacity 0.6s ${ease}` }}
                 />
                 <img src="/logos/logo-black.png" alt="R.S LUXURY CLEAN" width={48} height={48}
                   className="absolute inset-0 h-12 w-auto object-contain"
-                  style={{ opacity: scrolled ? 1 : 0, transition: `opacity 0.6s ${ease}` }}
+                  style={{ opacity: lightBg ? 1 : 0, transition: `opacity 0.6s ${ease}` }}
                 />
               </button>
 
@@ -125,7 +148,7 @@ export const NavigationBar = () => {
                       onClick={() => scrollTo(link.href)}
                       className="nav-link text-[13px] tracking-[0.08em] font-medium cursor-pointer pointer-events-auto"
                       style={{
-                        color: scrolled ? 'var(--color-text)' : '#fff',
+                        color: lightBg ? 'var(--color-text)' : '#fff',
                         transition: `color 0.5s ${ease}`,
                       }}
                     >
@@ -139,8 +162,9 @@ export const NavigationBar = () => {
               <div className="hidden md:block">
                 <button
                   onClick={() => scrollTo('#contact')}
-                  className="shine text-xs tracking-[0.15em] uppercase px-6 py-2.5 min-h-[44px] rounded-xl cursor-pointer"
+                  className="shine text-xs tracking-[0.15em] uppercase px-6 py-2.5 min-h-[44px] cursor-pointer"
                   style={{
+                    borderRadius: scrolled ? '2rem' : '0.75rem',
                     background: scrolled ? 'var(--color-cta)' : 'transparent',
                     color: scrolled ? 'var(--color-cta-text)' : '#fff',
                     border: scrolled ? '1px solid transparent' : '1px solid rgba(255,255,255,0.3)',
@@ -156,7 +180,7 @@ export const NavigationBar = () => {
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="md:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
-                style={{ color: scrolled ? 'var(--color-text)' : '#fff', transition: `color 0.5s ${ease}` }}
+                style={{ color: lightBg ? 'var(--color-text)' : '#fff', transition: `color 0.5s ${ease}` }}
                 aria-label="תפריט"
               >
                 {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -179,7 +203,7 @@ export const NavigationBar = () => {
                         key={link.href}
                         onClick={() => scrollTo(link.href)}
                         className="nav-link text-start text-lg font-medium cursor-pointer"
-                        style={{ color: scrolled ? 'var(--color-text)' : '#fff', transition: `color 0.5s ${ease}` }}
+                        style={{ color: lightBg ? 'var(--color-text)' : '#fff', transition: `color 0.5s ${ease}` }}
                       >
                         {link.label}
                       </button>

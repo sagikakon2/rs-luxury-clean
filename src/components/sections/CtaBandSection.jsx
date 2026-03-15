@@ -7,7 +7,7 @@ export const CtaBandSection = () => {
   const scrollTo = () => scrollToSection('#contact');
 
   return (
-    <section className="py-24 md:py-32 bg-cta relative overflow-hidden">
+    <section data-dark className="py-24 md:py-32 bg-cta relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="gradient-blob w-96 h-96 bg-primary/10 -top-32 -end-32" />
         <div className="gradient-blob w-80 h-80 bg-secondary/8 bottom-10 -start-24" />

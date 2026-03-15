@@ -7,7 +7,7 @@ export const ParallaxDivider = ({
   author,
   height = 'h-[50dvh] md:h-[60dvh]',
 }) => (
-  <section className={`relative ${height} flex items-center justify-center overflow-hidden`}>
+  <section data-dark className={`relative ${height} flex items-center justify-center overflow-hidden`}>
     <img
       src={image}
       alt=""
