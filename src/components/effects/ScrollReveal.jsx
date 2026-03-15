@@ -1,14 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const isTouchDevice =
-  typeof window !== 'undefined' &&
-  ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-
-const MobileReveal = ({ children, className }) => {
+export const ScrollReveal = ({ children, delay = 0, className = '' }) => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -38,37 +30,11 @@ const MobileReveal = ({ children, className }) => {
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+        transform: visible ? 'translateY(0)' : 'translateY(15px)',
+        transition: `opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
       }}
     >
       {children}
     </div>
   );
 };
-
-const DesktopReveal = ({ children, delay, className }) => {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ctx = gsap.context(() => {
-      gsap.from(ref.current, {
-        y: 15,
-        opacity: 0,
-        duration: 0.9,
-        delay,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
-      });
-    });
-    return () => ctx.revert();
-  }, [delay]);
-
-  return <div ref={ref} className={className}>{children}</div>;
-};
-
-export const ScrollReveal = ({ children, delay = 0, className = '' }) =>
-  isTouchDevice
-    ? <MobileReveal className={className}>{children}</MobileReveal>
-    : <DesktopReveal delay={delay} className={className}>{children}</DesktopReveal>;

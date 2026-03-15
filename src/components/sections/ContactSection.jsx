@@ -1,17 +1,7 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, ArrowLeft, Loader2, ChevronDown, CheckCircle2 } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowLeft, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { ScrollReveal } from '@/components/effects/ScrollReveal';
-
-const schema = z.object({
-  name: z.string().min(1, 'שם מלא הוא שדה חובה'),
-  phone: z.string().regex(/^[\d\-+() ]{7,15}$/, 'מספר טלפון לא תקין'),
-  service: z.string().min(1, 'נא לבחור סוג שירות'),
-  message: z.string().optional(),
-});
 
 const SERVICES_OPTIONS = [
   'ניקיון משרדים',
@@ -21,18 +11,28 @@ const SERVICES_OPTIONS = [
   'אחר',
 ];
 
-export const ContactSection = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(schema) });
+const validate = (form) => {
+  const errs = {};
+  if (!form.name.trim()) errs.name = 'שם מלא הוא שדה חובה';
+  if (!/^[\d\-+() ]{7,15}$/.test(form.phone)) errs.phone = 'מספר טלפון לא תקין';
+  if (!form.service) errs.service = 'נא לבחור סוג שירות';
+  return errs;
+};
 
-  const onSubmit = async (data) => {
-    const msg = `שלום, שמי ${data.name}.\nמעוניין/ת בשירות: ${data.service}.\n${data.message || ''}`;
-    const url = `https://wa.me/972539300202?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+export const ContactSection = () => {
+  const [form, setForm] = useState({ name: '', phone: '', service: '', message: '' });
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate(form);
+    setErrors(errs);
+    if (Object.keys(errs).length) return;
+    const msg = `שלום, שמי ${form.name}.\nמעוניין/ת בשירות: ${form.service}.\n${form.message || ''}`;
+    window.open(`https://wa.me/972539300202?text=${encodeURIComponent(msg)}`, '_blank');
     setSubmitted(true);
   };
 
@@ -120,17 +120,18 @@ export const ContactSection = () => {
                   <p className="text-text-muted">הפנייה שלכם התקבלה, נחזור אליכם בהקדם.</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                <form onSubmit={onSubmit} className="flex flex-col gap-5">
                   <div>
                     <label className="block text-sm font-medium text-text mb-1.5">
                       שם מלא <span className="text-red-400">*</span>
                     </label>
                     <input
-                      {...register('name')}
+                      value={form.name}
+                      onChange={set('name')}
                       placeholder="הכניסו את שמכם"
                       className={inputClass}
                     />
-                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
+                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
                   </div>
 
                   <div>
@@ -138,12 +139,13 @@ export const ContactSection = () => {
                       טלפון <span className="text-red-400">*</span>
                     </label>
                     <input
-                      {...register('phone')}
+                      value={form.phone}
+                      onChange={set('phone')}
                       type="tel"
                       placeholder="050-0000000"
                       className={inputClass}
                     />
-                    {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone.message}</p>}
+                    {errors.phone && <p className="text-red-400 text-xs mt-1">{errors.phone}</p>}
                   </div>
 
                   <div>
@@ -152,7 +154,8 @@ export const ContactSection = () => {
                     </label>
                     <div className="relative">
                       <select
-                        {...register('service')}
+                        value={form.service}
+                        onChange={set('service')}
                         className={`${inputClass} appearance-none pe-12 cursor-pointer`}
                       >
                         <option value="">בחירת שירות...</option>
@@ -162,7 +165,7 @@ export const ContactSection = () => {
                       </select>
                       <ChevronDown className="absolute end-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted pointer-events-none" />
                     </div>
-                    {errors.service && <p className="text-red-400 text-xs mt-1">{errors.service.message}</p>}
+                    {errors.service && <p className="text-red-400 text-xs mt-1">{errors.service}</p>}
                   </div>
 
                   <div>
@@ -170,7 +173,8 @@ export const ContactSection = () => {
                       הודעה
                     </label>
                     <textarea
-                      {...register('message')}
+                      value={form.message}
+                      onChange={set('message')}
                       rows={4}
                       placeholder="ספרו לנו במה נוכל לעזור..."
                       className={`${inputClass} resize-none`}
@@ -179,17 +183,10 @@ export const ContactSection = () => {
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="bg-cta text-cta-text text-sm tracking-[0.15em] uppercase px-8 py-4 min-h-[48px] cursor-pointer hover:opacity-90 transition-opacity mt-2 flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="bg-cta text-cta-text text-sm tracking-[0.15em] uppercase px-8 py-4 min-h-[48px] cursor-pointer hover:opacity-90 transition-opacity mt-2 flex items-center justify-center gap-2"
                   >
-                    {isSubmitting ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <>
-                        שליחה
-                        <ArrowLeft className="w-4 h-4" />
-                      </>
-                    )}
+                    שליחה
+                    <ArrowLeft className="w-4 h-4" />
                   </button>
                 </form>
               )}

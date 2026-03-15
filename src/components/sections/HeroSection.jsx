@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { KineticText } from '@/components/effects/KineticText';
-import { SparklesCore } from '@/components/effects/SparklesCore';
 import { ShimmerButton } from '@/components/effects/ShimmerButton';
 import { scrollToSection } from '@/hooks/useSmoothScroll';
 
@@ -66,14 +65,6 @@ export const HeroSection = () => {
       })}
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
-
-      <SparklesCore
-        particleColor="#C4B5A0"
-        particleDensity={10}
-        speed={0.08}
-        minSize={0.3}
-        maxSize={0.8}
-      />
 
       <motion.div
         initial={{ opacity: 0 }}
