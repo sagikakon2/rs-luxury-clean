@@ -5,7 +5,7 @@ export const ParallaxDivider = ({
   overlayClass = 'bg-black/60',
   quote,
   author,
-  height = 'h-[50dvh] md:h-[60dvh]',
+  height = 'h-[50svh] md:h-[60svh]',
 }) => (
   <section data-dark className={`relative ${height} flex items-center justify-center overflow-hidden`}>
     <img

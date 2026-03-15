@@ -213,7 +213,7 @@ export const GallerySection = () => {
                       autoPlay
                       playsInline
                       className="w-full object-contain rounded-lg"
-                      style={{ maxHeight: '75dvh' }}
+                      style={{ maxHeight: '75svh' }}
                     />
                   ) : (
                     <>
@@ -221,7 +221,7 @@ export const GallerySection = () => {
                         src={currentItem.src}
                         alt={currentItem.alt}
                         className="w-full object-contain rounded-lg"
-                        style={{ maxHeight: '75dvh' }}
+                        style={{ maxHeight: '75svh' }}
                         width={800}
                         height={800}
                         draggable={false}
