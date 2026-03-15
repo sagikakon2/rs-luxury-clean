@@ -1,5 +1,5 @@
 import { Phone, Mail, ArrowUp } from 'lucide-react';
-import { scrollToSection, getLenis } from '@/hooks/useSmoothScroll';
+import { scrollToSection } from '@/hooks/useSmoothScroll';
 
 const FOOTER_LINKS = [
   { label: 'שירותים', href: '#services' },
@@ -12,12 +12,7 @@ export const FooterSection = () => {
   const scrollTo = (href) => scrollToSection(href);
 
   const backToTop = () => {
-    const lenis = getLenis();
-    if (lenis) {
-      lenis.scrollTo(0, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -70,7 +65,7 @@ export const FooterSection = () => {
           </p>
           <button
             onClick={backToTop}
-            className="w-11 h-11 rounded-xl flex items-center justify-center text-cta-text/50 hover:text-primary transition-colors cursor-pointer"
+            className="btn-outline-lift w-11 h-11 rounded-xl flex items-center justify-center text-cta-text/50 hover:text-primary cursor-pointer"
             style={{
               background: 'rgba(245,243,240,0.08)',
               boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.15)',

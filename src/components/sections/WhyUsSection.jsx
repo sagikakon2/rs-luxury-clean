@@ -51,7 +51,7 @@ export const WhyUsSection = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 mb-24">
         {DIFFERENTIATORS.map((item, i) => (
           <ScrollReveal key={item.title} delay={i * 0.12}>
-            <div className="glass-card rounded-2xl p-8 text-center h-full">
+            <div className="glass-card glass-card-hover rounded-2xl p-8 text-center h-full">
               <div className="w-14 h-14 mx-auto mb-6 rounded-xl flex items-center justify-center"
                 style={{
                   background: 'linear-gradient(135deg, rgba(139,115,85,0.1), rgba(196,181,160,0.15))',

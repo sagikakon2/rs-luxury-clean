@@ -29,13 +29,13 @@ export const CtaBandSection = () => {
               onClick={scrollTo}
               className="text-cta text-sm tracking-[0.15em] uppercase px-10 py-4 min-h-[48px]"
               background="var(--color-cta-text)"
-              shimmerColor="rgba(139,115,85,0.2)"
+              shimmerColor="rgba(139,115,85,0.08)"
             >
               צרו קשר
             </ShimmerButton>
             <a
               href="tel:0539300202"
-              className="border border-cta-text/30 text-cta-text text-sm tracking-[0.15em] uppercase px-10 py-4 min-h-[48px] cursor-pointer hover:bg-cta-text/10 transition-colors flex items-center gap-2"
+              className="btn-outline-lift border border-cta-text/30 text-cta-text text-sm tracking-[0.15em] uppercase px-10 py-4 min-h-[48px] cursor-pointer hover:bg-cta-text/10 flex items-center gap-2"
             >
               053-930-0202
               <ArrowLeft className="w-4 h-4" />

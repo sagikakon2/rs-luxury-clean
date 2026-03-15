@@ -183,7 +183,7 @@ export const ContactSection = () => {
 
                   <button
                     type="submit"
-                    className="bg-cta text-cta-text text-sm tracking-[0.15em] uppercase px-8 py-4 min-h-[48px] cursor-pointer hover:opacity-90 transition-opacity mt-2 flex items-center justify-center gap-2"
+                    className="btn-lift bg-cta text-cta-text text-sm tracking-[0.15em] uppercase px-8 py-4 min-h-[48px] cursor-pointer mt-2 flex items-center justify-center gap-2"
                   >
                     שליחה
                     <ArrowLeft className="w-4 h-4" />

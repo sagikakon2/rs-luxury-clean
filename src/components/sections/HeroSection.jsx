@@ -122,7 +122,7 @@ export const HeroSection = () => {
             onClick={() => scrollToSection('#contact')}
             className="text-cta-text text-sm tracking-[0.15em] uppercase px-10 py-4 min-h-[48px] rounded-sm"
             background="var(--color-cta)"
-            shimmerColor="rgba(196,181,160,0.25)"
+            shimmerColor="rgba(196,181,160,0.1)"
           >
             קבלו הצעת מחיר
           </ShimmerButton>
@@ -130,7 +130,7 @@ export const HeroSection = () => {
             href="https://wa.me/972539300202?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-white/30 text-white text-sm tracking-[0.15em] uppercase px-10 py-4 min-h-[48px] cursor-pointer hover:bg-white/10 transition-colors flex items-center gap-2"
+            className="btn-outline-lift border border-white/30 text-white text-sm tracking-[0.15em] uppercase px-10 py-4 min-h-[48px] cursor-pointer hover:bg-white/10 flex items-center gap-2"
           >
             שלחו הודעה
             <ArrowLeft className="w-4 h-4" />
