@@ -10,16 +10,6 @@ const NAV_LINKS = [
   { label: 'צור קשר', href: '#contact' },
 ];
 
-const LiquidGlassSVG = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }} aria-hidden="true">
-    <filter id="lg-dist" x="-10%" y="-10%" width="120%" height="120%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise" />
-      {/* <feGaussianBlur in="noise" stdDeviation="2" result="blurred" /> */}
-      <feDisplacementMap in="SourceGraphic" in2="blurred" scale="50" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-      <feGaussianBlur in="displaced" stdDeviation="2.5" />
-    </filter>
-  </svg>
-);
 
 const ease = 'cubic-bezier(0.4, 0, 0.2, 1)';
 const t = `all 0.6s ${ease}`;
@@ -97,9 +87,6 @@ export const NavigationBar = () => {
   const textColor = lightBg ? 'var(--color-text)' : '#fff';
 
   return (
-    <>
-      <LiquidGlassSVG />
-
       <div className="fixed top-0 inset-x-0 z-50 pointer-events-none">
         <div
           className="pointer-events-auto"
@@ -232,6 +219,5 @@ export const NavigationBar = () => {
           </header>
         </div>
       </div>
-    </>
   );
 };

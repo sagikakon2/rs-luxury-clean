@@ -107,46 +107,6 @@
   .service-card:hover .service-card-glow { opacity: 1; }
   @media (max-width: 767px) { .service-card-glow { display: none; } }
 
-  /* ─── Liquid Glass bubble (nav) ─── */
-  .lg-shell { position: relative; overflow: hidden; }
-
-  /* SVG displacement layer — desktop only */
-  .lg-filter {
-    position: absolute; inset: 0; z-index: 0; border-radius: inherit; isolation: isolate;
-    backdrop-filter: blur(0.5px); -webkit-backdrop-filter: blur(0.5px);
-    filter: url(#lg-dist);
-  }
-  @media (max-width: 767px), (hover: none) {
-    .lg-filter { display: none; }
-  }
-
-  /* Frost — transparent fill + gradient border */
-  .lg-frost {
-    position: absolute; inset: 0; z-index: 1; border-radius: inherit;
-    border: 1px solid transparent;
-    background:
-      rgba(255,255,255,0.02) padding-box,
-      linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08) 40%, transparent 60%, rgba(255,255,255,0.15)) border-box;
-  }
-  /* Mobile fallback: slightly more opaque + blur since no SVG distortion */
-  @media (max-width: 767px), (hover: none) {
-    .lg-frost {
-      backdrop-filter: blur(8px) saturate(1.3); -webkit-backdrop-filter: blur(8px) saturate(1.3);
-      background:
-        rgba(255,255,255,0.08) padding-box,
-        linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08) 40%, transparent 60%, rgba(255,255,255,0.15)) border-box;
-    }
-  }
-
-  /* Inner shadow for depth */
-  .lg-specular {
-    position: absolute; inset: 0; z-index: 2; border-radius: inherit;
-    pointer-events: none;
-    box-shadow:
-      inset 2px 2px 6px rgba(0,0,0,0.04),
-      inset -2px -2px 6px rgba(255,255,255,0.15);
-  }
-
   .lg-content { position: relative; z-index: 3; width: 100%; }
 
   /* ─── Glass cards ─── */
@@ -189,4 +149,42 @@
 @keyframes pulse-gentle {
   0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
   50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+}
+
+/* ─── Liquid Glass bubble (nav) — outside @layer to avoid Tailwind cascade issues in prod ─── */
+.lg-shell { position: relative; overflow: hidden; }
+
+.lg-filter {
+  position: absolute; inset: 0; z-index: 0; border-radius: inherit; isolation: isolate;
+  -webkit-backdrop-filter: blur(0.5px);
+  backdrop-filter: blur(0.5px);
+  -webkit-filter: url(#lg-dist);
+  filter: url(#lg-dist);
+}
+@media (max-width: 767px), (hover: none) {
+  .lg-filter { display: none; }
+}
+
+.lg-frost {
+  position: absolute; inset: 0; z-index: 1; border-radius: inherit;
+  border: 1px solid transparent;
+  background:
+    rgba(255,255,255,0.02) padding-box,
+    linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08) 40%, transparent 60%, rgba(255,255,255,0.15)) border-box;
+}
+@media (max-width: 767px), (hover: none) {
+  .lg-frost {
+    backdrop-filter: blur(8px) saturate(1.3); -webkit-backdrop-filter: blur(8px) saturate(1.3);
+    background:
+      rgba(255,255,255,0.08) padding-box,
+      linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08) 40%, transparent 60%, rgba(255,255,255,0.15)) border-box;
+  }
+}
+
+.lg-specular {
+  position: absolute; inset: 0; z-index: 2; border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 2px 2px 6px rgba(0,0,0,0.04),
+    inset -2px -2px 6px rgba(255,255,255,0.15);
 }
